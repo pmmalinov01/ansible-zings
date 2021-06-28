@@ -1,0 +1,9 @@
+---
+- name: testing
+  hosts: myself
+  tasks:
+    - name: package is not possible
+      apt:
+        name:  notapkgasd
+        state: latest
+      ignore_errors: yes

@@ -1,0 +1,76 @@
+---
+- name: Install and set up webserver
+  hosts: myself
+  vars:
+    web_pkg: apache2
+    firewall_pkg: ufw
+    datab: mariadb-server
+    database_service: mariadb
+    
+  tasks:
+    - name: Install apache htpd
+      apt:
+        name: "{{ web_pkg }}"
+        state: latest
+
+    - name: start httpd
+      service:
+        name: "{{ web_pkg }}"
+        enabled: true
+    - name: example content
+      copy:
+        dest: /var/www/html/index.html
+        content: "Hello world\n"
+ 
+
+- name: setup firewall
+  hosts: myself
+  vars:
+    firewall_pkg: ufw
+  tasks:
+    - name: install {{ firewall_pkg }}
+      apt:
+        name: "{{ firewall_pkg }}"
+        state: latest
+    - name: Allow all and enable UFW
+      ufw:
+        state: enabled
+        policy: allow
+    - name: set Logging
+      ufw:
+        logging: True
+
+- name: set up database
+  hosts: myself
+  vars:
+    datab: mariadb-server
+    database_service: mariadb
+  tasks:
+    - name: install {{ datab }}
+      apt:
+        name: "{{ datab }}"
+        state: latest
+    - name: start {{ database_service }}
+      service:
+        name: "{{ database_service }}"
+        enabled: true
+
+- name: install random software
+  hosts: myself
+  tasks:
+    - name: play 1 of vars testing "{{ packages }}"
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - zip
+        - unzip
+        - nano
+        - getdns-utils
+- name: Ensure webser is reachable
+  hosts: boston
+  tasks:
+    - name: ping - pong
+      uri:
+       url: http://9.30.94.221/
+       status_code: 200

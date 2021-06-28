@@ -1,0 +1,44 @@
+---
+- name: Create Beatles user and give them access to their DB
+  hosts: myself
+  vars:
+    beatles:
+      - "john"
+      - paul
+      - george
+      - ringo
+
+    category_db:
+      - lyrics
+      - concerts
+      - instruments
+
+
+  tasks:
+    - name: create the users {{ item }}
+      user:
+        name: "{{ item }}"
+      with_items: "{{ beatles }}"
+
+    - name: install mariadb-server
+      apt:
+        pkg:
+        - mariadb-server
+        - mariadb-client
+        - mariadb-test
+
+    - name: start and aneable mariadb
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: give the users access to all DB
+      mysql_user:
+        name: "{{ item[0] }}"
+        priv: "{{ item[1] }}.*:ALL"
+        append_privs: yes
+        password: string123
+      with_nested:
+        - "{{ beatles }}"
+        - "{{ category_db }}"

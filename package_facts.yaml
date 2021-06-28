@@ -1,0 +1,14 @@
+---
+- name: Repository facts
+  hosts: all
+  vars:
+    pkg: apache2
+  tasks:
+    - name: find if we have facts about it
+      package_facts:
+        manager: auto
+    - name: show them
+      debug:
+        var: ansible_facts.packages[pkg]
+      when: pkg in ansible_facts.packages
+

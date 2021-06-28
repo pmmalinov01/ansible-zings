@@ -1,0 +1,17 @@
+---
+
+- name: loop reigster test
+  gather_facts: false
+  hosts: myself
+  tasks:
+    - name: loop each taks
+      shell: "echo this is my item {{ item }}"
+      loop:
+        - one
+        - two
+      register: echo_results
+
+    - name: Show echo_results variables
+      debug:
+        msg: "STDOUt of tast the tasks is: {{ item.stdout }}"
+      loop: "{{ echo_results['results'] }}"

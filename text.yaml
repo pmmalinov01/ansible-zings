@@ -1,0 +1,31 @@
+all:
+  children:
+    boston:
+      children:
+        firsttwo:
+          hosts:
+            10.11.53.49:
+              packages: &id001
+              - nmap
+              - awscli
+            10.11.53.50:
+              packages: *id001
+        threeandfour:
+          hosts:
+            10.11.53.98:
+              packages:
+              - sysstat
+              - apache2
+              - zip
+              - unzip
+              - salt-pepper
+            10.11.53.99:
+              packages: *id001
+    myself:
+      hosts:
+        localhost:
+          packages:
+          - apache2
+          - php
+          - screen
+    ungrouped: {}

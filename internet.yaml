@@ -1,0 +1,25 @@
+---
+- name: Enable Intrnet services
+  hosts: all
+  tasks:
+
+    - name: install stuff "{{ packages }}"
+      apt:
+        name: "{{ packages }}"
+        state: latest
+      register: output
+
+    - name: enable firewalld
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+    - name: firewalld permits httpd service
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+    - name: Show outpuit
+      debug:
+        var: output

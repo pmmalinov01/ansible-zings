@@ -1,0 +1,24 @@
+---
+- name: mariaDB server is running
+  hosts: all
+  vars:
+    mariadb_packages:
+      - mariadb-server
+      - mariadb-client
+      - mariadb-test
+
+  tasks:
+    - name: Install Mariadb sw
+      apt:
+        state: present
+        pkg:
+          - "{{ mariadb_packages[0] }}"
+          - "{{ mariadb_packages[1] }}"
+          - "{{ mariadb_packages[2] }}"
+      when: ansible_distribution == "Ubuntu"
+
+    - name: start the damnd db
+      service:
+        name: mariadb
+        state: started
+        enabled: True

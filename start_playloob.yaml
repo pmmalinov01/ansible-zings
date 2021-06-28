@@ -1,0 +1,11 @@
+---
+- name: new module playing
+  hosts: myself
+  tasks:
+
+    - name: run command
+      at:
+        command: echo -n  "Hello World!" > /tmp/hello1
+        count: 2
+        units: minutes
+        unique: yes

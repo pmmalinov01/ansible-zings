@@ -1,0 +1,29 @@
+---
+- name: configure web server
+  hosts: firsttwo
+  tasks:
+    - name: Include env task file and set the variables
+      import_tasks: tasks/env.yaml
+      vars:
+        package: apache2
+        service: apache2
+      when: ansible_facts['os_family'] == 'Ubuntu'
+    - name: import firewall stuff
+      import_tasks: tasks/firewall.yaml
+      vars:
+        firewall_pkg: ufw
+        firewall_svc: ufw
+        rules:
+          - 10.0.0.0/8
+          - 172.16.0.0/12
+    - name: import placeholder task
+      import_tasks: tasks/placeholder.yaml
+      vars:
+        file: /var/www/html/index.yaml
+    - name: import more plays
+      import_tasks: tasks/test.yaml
+      vars:
+        url:
+          - 10.11.53.49 
+          - 10.11.53.50
+

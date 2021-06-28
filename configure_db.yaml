@@ -1,0 +1,40 @@
+---
+- name: Mariadb is installed
+  hosts: myself
+  vars:
+    db_pkgs:
+      - mariadb-server
+      - mariadb-client
+    db_svc: mariadb
+    res_path: /root/mariadb/
+    config_file: "{{ res_path }}/my.cnf.stadnart"
+    config_file_dest: /etc/my.cnf
+
+  tasks:
+    - name: install stuff
+      apt:
+        name: "{{ db_pkgs }}"
+        state: present
+      notify:
+        - set db password
+    - name: start db
+      service:
+        name: "{{ db_svc }}"
+        state: started
+        enabled: True
+    - name: the {{ config_file }} has been isntalled
+      copy:
+        src: "{{ config_file }}"
+        dest: "{{ config_file_dest }}"
+        mode: '0600'
+      notify:
+        - restart db
+  handlers:
+    - name: restart db
+      service:
+        name: "{{ db_svc }}"
+        state: restarted
+    - name: set db password
+      mysql_user:
+        name: root
+        password: redhat

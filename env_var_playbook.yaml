@@ -1,0 +1,13 @@
+---
+- name: show all env varaibles
+  hosts: myself
+  vars:
+    myself_env: "{{ ansible_env }}"
+  tasks:
+    - name: show me what I have
+      debug:
+        msg: "{{ myself_env }}"
+
+    - name: specific env variables
+      debug:
+        msg: "{{ lookup('env', 'PWD', 'HOME', 'SSH_CONNECTION') }}"

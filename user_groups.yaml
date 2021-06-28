@@ -1,0 +1,20 @@
+---
+- name: Create user in groups
+  hosts: myself
+  tasks:
+    - name: create groups
+      group:
+        name: "{{ item }}"
+      loop:
+        - malinov
+        - atanasov
+
+    - name: user in group
+      user:
+        name: "{{ item.name  }}"
+        groups: "{{ item.group }}"
+      loop:
+        - { name: 'fred', group: 'malinov'  }
+        - { name: 'pavel', group: 'malinov'  }
+        - { name: 'dad', group: 'atanasov'  }
+        - { name: 'mama', group: 'atanasov'  }

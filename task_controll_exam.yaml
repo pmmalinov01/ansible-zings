@@ -1,0 +1,9 @@
+---
+- name: Task controll
+  hosts: myself
+  tasks:
+    - name: if resources are low fail
+      fail:
+        msg: the sutmater is low on resources
+      when: ansible_distribution != "Ubuntu" or
+            ansible_memfree_mb < 20000

@@ -1,0 +1,15 @@
+---
+- name: isntall and start apache
+  hosts: firsttwo
+  tasks:
+    - name: install stuff
+      apt:
+        name: "{{ ansible_facts['ansible_local']['customer']['self_learning']['package'] }}"
+        state: latest
+
+    - name: start service
+      service:
+        name: "{{ ansible_facts['ansible_local']['customer']['self_learning']['service'] }}"
+        state: "{{ ansible_facts['ansible_local']['customer']['self_learning']['state'] }}"
+        enabled: "{{ ansible_facts['ansible_local']['customer']['self_learning']['enabled'] }}"
+

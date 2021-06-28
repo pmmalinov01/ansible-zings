@@ -1,0 +1,12 @@
+---
+- name: Display some facts about mself
+  hosts: myself
+  tasks:
+    - name: show me the properties of {{ inventory_hostname }}
+      debug:
+        msg: |
+                my FQDN is {{ ansible_facts['fqdn'] }}
+                IP is {{ ansible_facts['default_ipv4']['address'] }}
+                what are {{ group_names }}
+
+

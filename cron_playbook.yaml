@@ -1,0 +1,12 @@
+---
+- name: guided excerise
+  hosts: all
+  tasks:
+    - name: crontbime exists
+      cron:
+        name: add date adn time to a file
+        minute: "*/1"
+        hour: "*"
+        weekday: 1-5
+        job: date >> /tmp/datefile
+        state: present

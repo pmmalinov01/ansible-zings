@@ -1,0 +1,12 @@
+---
+- name: install stuff from variables example
+  hosts: 10.11.53.98
+  tasks:
+    - name: Install SW "{{ packages }}"
+      register: output
+      apt:
+        name: "{{ packages }}"
+        state: present
+    - name: show stuff
+      debug:
+        var: output

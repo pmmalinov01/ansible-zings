@@ -1,0 +1,29 @@
+---
+- name: Playing with zip and loop and stuff
+  hosts: myself
+  vars:
+    src: /root/host_vars
+    zipf: /root/host_vars.tar.gz
+    zipformat: zip
+  tasks:
+    - name: create a tar ball
+      archive:
+        path: "{{ src }}"
+        format: "{{ zipformat }}"
+        dest: "{{ zipf }}"
+    - name: check to see what we have
+      stat:
+        path: "{{ zipf }}"
+      register: output
+    - name: show archive attributes
+      debug:
+        var: output
+    - name: make sure we havat what we need
+      assert:
+        that: "'zip' in output.stat.mimetype"
+
+    - name: playing
+      debug:
+        msg: "{{ item }}"
+        verbosity: 5
+      with_items: "{{ output.stat }}" 

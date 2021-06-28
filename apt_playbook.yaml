@@ -1,0 +1,8 @@
+---
+- name: install stuff from variables example
+  hosts: all
+  tasks:
+    -  name: Install SW
+       apt:
+         name: "{{ packages }}"
+         state: present

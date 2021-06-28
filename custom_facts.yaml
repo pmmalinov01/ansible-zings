@@ -1,0 +1,16 @@
+---
+- name: Install remote facts
+  hosts: firsttwo
+  vars:
+    rem_dir: /etc/ansible/facts.d
+    facts_file: customer.fact
+  tasks:
+    - name: Create dir
+      file:
+        state: directory
+        recurse: yes
+        path: "{{ rem_dir }}"
+    - name: Install the facts
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ rem_dir }}"

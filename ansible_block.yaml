@@ -1,0 +1,44 @@
+---
+- name: testing out blocks
+  hosts: all
+  tasks:
+      - name: Install stuff
+        block:
+        - name: package needed by apt
+          apt:
+            state: latest
+            pkg:
+            - zip
+            - mariadb-server
+            - awscli
+        - name: test file inline
+          lineinfile:
+            dest: /etc/motd
+            line: HELLO FUCKERS
+            state: present
+        rescue:
+          - name: use diff location for motd
+            lineinfile:
+              dest: /etc/update-motd.d/old/00-header
+              line: hello fucking fuckers
+              state: present
+        always:
+          - name: restart httpd
+            service:
+              name: apache2
+        when: ansible_distribution == 'Ubuntu'
+      - name: testing
+        block:
+        - name: pkg insll
+          apt:
+            state: latest
+            pkg:
+            - unzip
+        when: ansible_distribution == 'RedHat'
+      - name: excerize
+        command: date
+        register: command_results
+        changed_when: True 
+      - name: print locla time
+        debug:
+          var: command_results.stdout_lines

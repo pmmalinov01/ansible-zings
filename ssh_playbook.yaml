@@ -1,0 +1,15 @@
+---
+- name: restart sshd playbook
+  hosts: myself
+  tasks:
+    - name: limit ssh tomembers of group blq blq
+      lineinfile:
+        state: present
+        dest: /etc/ssh/sshd_config
+        line: LogLevel DEBUG
+      notify: restart ssh daemon
+  handlers:
+    - name: restart ssh daemon1
+      service:
+        name: sshd
+        state: restarted
