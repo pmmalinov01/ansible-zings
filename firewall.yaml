@@ -1,0 +1,11 @@
+---
+  - name: Install the firewall
+    apt:
+      name: "{{ firewall_pkg }}"
+      state: latest
+
+  - name: Start the firewall
+    service:
+      name: "{{ firewall_svc }}"
+      enabled: true
+      state: started

@@ -1,0 +1,6 @@
+---
+  - name: connect to internet web server
+    uri:
+      url: "{{ item }}"
+      status_code: 200
+    loop: "{{ url }}"

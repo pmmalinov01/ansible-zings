@@ -1,0 +1,9 @@
+---
+- name: Template run
+  hosts: all
+  tasks:
+    - name: create the file
+      template:
+        dest: /tmp/users.txt
+        src: test.j2 
+        backup: yes

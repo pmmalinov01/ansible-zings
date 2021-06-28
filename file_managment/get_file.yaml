@@ -1,0 +1,18 @@
+---
+- name: Explore file modules
+  hosts: 10.11.53.98
+  vars:
+    files_path: /root/
+    file_one: "{{ files_path }}get_this_file.txt"
+    place_files: /root/file_managment/
+    place_file_one: "{{ place_files }}file_one.txt"
+  tasks:
+    - name: Get the file
+      fetch:
+        flat: True
+        src: "{{ file_one }}"
+        dest: "{{ place_file_one }}"
+      register: output
+    - name: showoutpiut
+      debug:
+        msg: "{{ output | to_nice_json }}"
